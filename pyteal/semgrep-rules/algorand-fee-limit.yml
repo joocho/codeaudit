@@ -1,0 +1,22 @@
+rules:
+  - id: algorand-fee-limit-not-too-high
+    message: |
+      Fee should be less than some reasonable amount (in micro-Algos). 
+      An unchecked Fee could burn the entire value of the contract account!
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+      The limit of fee is arbitrarily set to 100000 (minimum balance). please adjust the value as you wish. 
+    patterns: 
+      - pattern:
+          $A.fee = $VALUE
+      - metavariable-comparison:
+          metavariable: $VALUE
+          comparison: $VALUE > 100000
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal
+      fee limit: 100000
+
+      

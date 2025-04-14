@@ -1,0 +1,18 @@
+rules:
+  - id: algorand-application-args-length
+    message: |
+      Check the ApplicationArgs of stateful transactions in stateless transactions.
+      Check that application_args length is equal to what supposed to be. Do not accept any other value
+    patterns: 
+      - pattern: 
+          $TXN.application_args.length() == Int(...)
+      - pattern-not: |
+          $FOO($TXN.application_args.length() == ..., ...)
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology: 
+        - pyteal
+      

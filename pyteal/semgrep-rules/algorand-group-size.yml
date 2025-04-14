@@ -1,0 +1,28 @@
+rules:
+  - id: algorand-group-size-check
+    message: |
+      Check that the GroupSize is equal to the expected number of transactions.
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns: 
+      - pattern-either:
+        - pattern: |
+            Eq($TXN.type_enum(), TxnType.$TYPE) 
+        - pattern: |
+            $TXN.type_enum() == TxnType.$TYPE 
+      - metavariable-pattern:
+          metavariable: $TYPE
+          pattern-either:
+            - pattern: Payment
+            - pattern: AssetTransfer
+            - pattern: ApplicationCall
+
+      - pattern-not-inside: |
+          <... Global.group_size() ...>
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology: 
+        - pyteal
+      

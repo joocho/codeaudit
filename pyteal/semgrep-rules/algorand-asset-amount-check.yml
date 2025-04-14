@@ -1,0 +1,20 @@
+rules:
+  - id: algorand-amount-check
+    message: |
+      When not closing out a contract account, AssetAmount should be checked 
+      to be equal to the intended transfer amount.
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns: 
+      - pattern: |
+           $TXN.type_enum() == TxnType.AssetTransfer
+      - pattern-not-inside: |       
+          <... $TXN.asset_amount() ...>
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal
+      maturity: incomplete.
+      

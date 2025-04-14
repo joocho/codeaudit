@@ -1,0 +1,20 @@
+rules:
+  - id: algorand-fee-set-check
+    message: |
+      Fee should be set to some reasonable amount (in micro-Algos). 
+      An unset Fee could burn the entire value of the contract account!
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns: 
+      - pattern: 
+          $A.flat_fee = $BOOL
+      - pattern-not-inside: |
+          $A.flat_fee = $BOOL
+          ...
+          $A.fee = $VALUE
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal
+      

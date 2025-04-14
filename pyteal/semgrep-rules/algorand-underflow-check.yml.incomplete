@@ -1,0 +1,17 @@
+rules:
+  - id: algorand-underflow-check
+    message: |
+      Possible underflow 
+    patterns: 
+      - pattern: 
+          $F - ... 
+      - pattern-not: |
+          If($F > ... )
+          ...
+          $F - ...    
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal

@@ -1,0 +1,23 @@
+{
+    "path_lib": "libfastpbkdf2.so",
+    "algorithms": {
+        "PBKDF2":{
+            "name_function": "fastpbkdf2_hmac_sha1",
+            "nb_tests": 10000,
+            "arguments": {
+                "password": {"type": "uint8_t*"},
+                "len_password": {"type": "uint32_t", "min": 1, "max": 20},
+                "salt": {"type": "uint8_t*"},
+                "len_salt": {"type": "uint32_t", "min": 1, "max": 20},
+                "iterations": {"type": "uint32_t", "min": 1, "max": 2000},
+                "output": {"type": "uint8_t*"},
+                "len_output": {"type": "uint32_t", "min": 1, "max": 20}
+            },
+            "constants": {
+                "PRF": "SHA1"
+            },
+            "returnCode": {
+            }
+        }
+    }
+}

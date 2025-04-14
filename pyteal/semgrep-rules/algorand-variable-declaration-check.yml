@@ -1,0 +1,18 @@
+rules:
+  - id: algorand-variable-decleration-check
+    message: |
+      The declaration of variable does not respect the convention. global variable should be written global_** and local variables should be written local_**
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns: 
+      - pattern: |
+          $F = Bytes(...)
+      - metavariable-pattern: 
+          metavariable: $F
+          patterns:
+          - pattern-not-regex: "(local_|global_|opp_)+^[a-z]$"
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal

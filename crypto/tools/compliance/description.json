@@ -1,0 +1,28 @@
+{
+    "path_lib": "libolm.so.3.2.11",
+    "algorithms": {
+        "PBKDF2":{
+            "name_function": "compute_pbkdf2",
+            "nb_tests": 100,
+            "arguments": {
+                "sha_type": {"type": "uint8_t", "constant": 0},
+                "hlen": {"type": "uint32_t", "constant": 20},
+                "password": {"type": "uint8_t*"},
+                "len_password": {"type": "uint32_t", "min": 1, "max": 4},
+                "salt": {"type": "uint8_t*"},
+                "len_salt": {"type": "uint32_t", "min": 1, "max": 4},
+                "iterations": {"type": "uint32_t", "min": 1, "max": 1},
+                "output": {"type": "uint8_t*"},
+                "len_output": {"type": "uint32_t", "min": 1, "max": 20}
+            },
+            "constants": {
+                "PRF": "SHA1"
+            },
+            "returnCode": {
+                "0": "NOK: DK too long? or length pass 0",
+                "1": "OK",
+                "3": "MEMORY_ALLOCATION_ERROR"
+            }
+        }
+    }
+}
