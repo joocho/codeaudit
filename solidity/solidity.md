@@ -55,6 +55,18 @@
 - [Fuzzland](https://github.com/fuzzland/ityfuzz) - a blazing-fast EVM and MoveVM smart contract hybrid fuzzer that combines symbolic execution and fuzzing to find bugs in smart contracts offchain and onchain.
 - [Wake framework](https://github.com/Ackee-Blockchain/wake)
 
+## How to run Slither with docker
+
+- Install the eth-security-toolbox 
+- install Rancher Desktop: https://docs.rancherdesktop.io/getting-started/installation
+- configure for WSL: https://docs.rancherdesktop.io/1.7/ui/preferences/wsl/
+- Use the eth-security-toolbox docker image: https://github.com/crytic/slither?tab=readme-ov-file#using-docker
+- Run the Slither
+    - share the project src code: docker run -it -v /home/joo/projects/a0/aod-contracts:/share trailofbits/eth-security-toolbox
+    - inside the docker, cd /share
+    - slither src > audit_logs/slither-result.txt 2>&1
+    - Rancher Desktop is delivered as a desktop application. You can download it from
+ 
 
 ## Semgrep for Ethereum Solidity
 Semgrep is a static code analyzer using an internal set of rules. It produces false positives because the rules are not 100% accurate but it can help detect hotspots for further manual investigation.
