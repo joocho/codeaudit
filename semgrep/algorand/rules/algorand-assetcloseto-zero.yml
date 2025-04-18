@@ -1,0 +1,19 @@
+rules:
+  - id: algorand-AssetCloseTo-zero-address
+    message: |
+      AssetCloseTo should be the intended recipient or equal to global ZeroAddress. 
+      An unchecked address could steal all the value!
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns: 
+      - pattern: 
+          $TXN.type_enum() == TxnType.AssetTransfer
+      - pattern-not-inside: |
+          <... $TXN.asset_close_to() ...>
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology: 
+        - pyteal
+      

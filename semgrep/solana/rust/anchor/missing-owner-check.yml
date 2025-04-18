@@ -1,0 +1,45 @@
+rules:
+  - id: anchor-missing-owner-check
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/2-owner-checks
+    message: |
+      Potentially missing owner check.
+      Make sure that $STRUCT.accounts.token.owner == &spl_token::ID
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          ...
+  
+          pub fn $F($CTX: Context<$STRUCT>) -> ProgramResult {
+            let $TOK = $ACCOUNT::unpack(&$CTX.accounts.$TOKEN.data.borrow())?;
+            ...
+            <...$TOK...>
+          }
+  
+          ...
+      - pattern: |
+          ...
+          #[derive(Accounts)]
+          pub struct $STRUCT<'$A> {
+            $TOKEN: AccountInfo<'$A>,
+            $AUTH: Signer<'$A>,
+          }
+          ...
+      - pattern-not: |
+          ...
+          
+          pub fn $F($CTX: Context<$STRUCT>) -> ProgramResult {
+            let $TOK = $ACCOUNT::unpack(&$CTX.accounts.$TOKEN.data.borrow())?;
+            ...
+            if $CTX.accounts.token.owner != &spl_token::ID {
+                ...
+            }
+            ...
+            <...$TOK...>
+          }
+          
+          ...

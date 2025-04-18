@@ -1,0 +1,8 @@
+rules:
+  - id: potential-memory-leak
+    patterns:
+      - pattern:
+          forget($VAR);
+    message: "Unsafe use of forget could result in memory leak. See: https://anssi-fr.github.io/rust-guide/05_memory.html"
+    languages: [rust]
+    severity: WARNING

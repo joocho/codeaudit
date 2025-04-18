@@ -1,0 +1,46 @@
+rules:
+  - id: anchor-unverified-parsed-account
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/1-account-data-matching
+    message: |
+      Potentially unverified parsed account.
+      Make sure that $CTX.accounts.authority.key == &token.owner
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - focus-metavariable: $TOK
+      - pattern: |
+          ...
+          pub fn $F($CTX: Context<$STRUCT>) -> ProgramResult {
+            let $TOK = $ACCOUNT::unpack(&$CTX.accounts.$TOKEN.data.borrow())?;
+            ...
+            <...$TOK...>
+          }
+          ...
+      - pattern: |
+          ...
+          
+          #[derive(Accounts)]
+          pub struct $STRUCT<'$A> {
+            $TOKEN: AccountInfo<'$A>,
+            $AUTH: Signer<'$A>,
+          }
+          
+          ...
+      - pattern-not: |
+          ...
+          
+          pub fn $F($CTX: Context<$STRUCT>) -> ProgramResult {
+            let token = $ACCOUNT::unpack(&ctx.accounts.token.data.borrow())?;
+            ...
+            if $CTX.accounts.$AUTH.key != &$TOKEN.owner {
+              ...
+            }
+            ...
+            <...token...>
+          }
+          
+          ...

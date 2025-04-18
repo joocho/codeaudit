@@ -1,0 +1,15 @@
+rules:
+  - id: unchecked-cast
+    patterns:
+    - pattern-either:
+      - pattern: |
+          let $X: u64 = ...;
+          ...
+          <...$X as u32...>
+      - pattern: |
+          let $X = ...;
+          ...
+          <...$X as i32...>
+    message: "Unchecked cast may lead to unexpected behaviour. Use i32::try_from($X) instead."
+    languages: [ rust ]
+    severity: ERROR

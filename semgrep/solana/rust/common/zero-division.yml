@@ -1,0 +1,23 @@
+rules:
+  - id: zero-division
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/rust-lang/rust/issues/944
+    message: Potential division by zero
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - pattern: |
+          let $A = 0;
+          ...
+          <...$X / $A...>
+      - pattern: |
+          <...$Y / 0...>
+      - pattern: |
+          let $A = 0;
+          ...
+          <...$X % $A...>
+      - pattern: |
+          <...$X % 0...>

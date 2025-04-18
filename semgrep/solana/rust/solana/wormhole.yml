@@ -1,0 +1,16 @@
+rules:
+  - id: solana-wormhole
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://twitter.com/samczsun/status/1489044984296792064
+        - https://research.kudelskisecurity.com/2022/02/03/quick-analysis-of-the-wormhole-attack/
+        - https://wormholecrypto.medium.com/wormhole-incident-report-02-02-22-ad9b8f21eec6
+    message: |
+      Use of unsafe sysvar API. Function load_instruction_at() is insecure. Use load_instruction_at_checked() instead.
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - pattern: |
+          load_instruction_at(...)

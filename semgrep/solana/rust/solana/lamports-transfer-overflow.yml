@@ -1,0 +1,21 @@
+rules:
+  - id: lamports-transfer-overflow
+    patterns:
+    - pattern-either:
+      - pattern: |
+          let $X = &mut accounts.iter();
+          ...
+          let $ACCOUNT = next_account_info($X)?;
+          ...
+          <...$ACCOUNT.try_borrow_mut_lamports()...> += ...;
+      - pattern: |
+          let $X = &mut accounts.iter();
+          ...
+          let $ACCOUNT = next_account_info($X)?;
+          ...
+          <...$ACCOUNT.try_borrow_mut_lamports()...> -= ...;
+    message: "Potential overflow/underflow in transfer of lamports. Use checked_add() or checked_sub() instead of the plus or minus operator."
+    languages: [ rust ]
+    severity: ERROR
+    metadata:
+      url: https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-overflow

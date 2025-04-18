@@ -1,0 +1,26 @@
+rules:
+  - id: anchor-insecure-pda-sharing
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/8-pda-sharing
+        - https://docs.solana.com/developing/programming-model/calling-between-programs#program-derived-addresses
+        - https://twitter.com/armaniferrante/status/1411589629384355840
+        - https://twitter.com/pencilflip/status/1483880018858201090
+    message: |
+      Potentially insecure PDA sharing.
+      Make sure not to use a global PDA, but instead, have a different PDA for that is unique to each authority domain.
+      For example when using different pools, make sure that the authority of each pool is a different PDA which is unique to that pool.
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          ...
+          pub fn $F($CTX: Context<$STRUCT>) -> ProgramResult {
+            ...
+            let $SEEDS = &[<... $CTX.accounts.$MEMBER ...>, ...];
+            token::transfer($CTX.accounts.$METHOD().with_signer(&[$SEEDS]), ...)
+            ...
+          }
+          ...

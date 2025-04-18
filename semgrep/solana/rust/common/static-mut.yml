@@ -1,0 +1,13 @@
+rules:
+  - id: mutable-static-declarations
+    patterns:
+      - pattern: |
+          static mut $STATIC_VAR: $STATIC_TYPE = $STATIC_VALUE;
+    message: "Use of static mut is dangerous. Review carefully."
+    languages: [ rust ]
+    severity: WARNING
+    metadata:
+      references:
+        - https://doc.rust-lang.org/reference/items/static-items.html#mutable-statics
+        - https://github.com/rust-lang/rust/issues/53639
+        - https://www.reddit.com/r/rust/comments/bkw00l/why_is_static_mut_bad_to_use/

@@ -1,0 +1,17 @@
+rules:
+  - id: solana-missing-freeze-authority
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://spl.solana.com/token#freezing-accounts
+    message: |
+      Use of FreezeAccount instruction. Potentially incorrect or missing freeze_authority. Check that it is correct and
+      that only expected users can freeze the account.
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - pattern: |
+          freeze_account(...)
+      - pattern: |
+          AccountState::Frozen

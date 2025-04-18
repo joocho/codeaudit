@@ -1,0 +1,26 @@
+rules:
+  - id: algorand-AssetCloseTo-zero-address
+    message: |
+      Type or TypeEnum can be checked to ensure something is a Payment or AssetXfer or another transaction type.
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns:
+      - pattern: |
+          $TXN.type_enum() == TxnType.$TYPE
+      - metavariable-pattern:
+          metavariable: $TYPE
+          patterns:
+            - pattern-not:
+                Payment
+            - pattern-not: 
+                AssetTransfer
+            - pattern-not: 
+                ApplicationCall
+
+ 
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology: 
+        - pyteal
+      

@@ -1,0 +1,23 @@
+rules:
+  - id: anchor-arbitrary-cpi
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/5-arbitrary-cpi
+    message: |
+      Potentially arbitrary cross-program invocation (CPI)
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          invoke(...)
+      - pattern-not-inside: |
+          if &spl_token::ID != $CTX.accounts.$FOO.key {
+            ...
+          }
+          ...
+          <... invoke(...) ...>
+          
+          
+      

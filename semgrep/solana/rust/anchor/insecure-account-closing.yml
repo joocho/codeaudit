@@ -1,0 +1,40 @@
+rules:
+  - id: anchor-insecure-account-closing
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/9-closing-accounts
+    message: |
+      Potentially insecure account closing.
+      It is recommended to use Anchor's #[account(mut, close = $DESTINATION)] attribute.
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          ...
+
+          pub fn $F($CTX: Context<$CLOSE>) -> ProgramResult {
+            ...
+            let $DL = $CTX.accounts.$DESTINATION.lamports();
+            ...
+            <...$CTX.accounts.$DESTINATION.lamports.borrow_mut()...>
+            ...
+          }
+          
+          ...
+      - pattern: |
+          ...
+          
+          #[derive(Accounts)]
+          pub struct $CLOSE<'$A> {
+            $ACCOUNT: Account<'$A, $SDATA>,
+            $DESTINATION: AccountInfo<'$A>,
+          }
+            
+          #[account]
+          pub struct $SDATA {
+            $DATA: u64,
+          }
+
+          ...

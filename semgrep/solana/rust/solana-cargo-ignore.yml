@@ -1,0 +1,9 @@
+rules:
+  - id: ignored-cargo
+    patterns:
+      - pattern: |
+          # Blocked on ...
+          --ignore RUSTSEC
+    message: "The following have been ignored within cargo-audit with commented indicators as part of the audit function and are currently blocked by external dependencies"
+    languages: [ generic ]
+    severity: WARNING

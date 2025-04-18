@@ -1,0 +1,17 @@
+rules:
+  - id: algorand-expiration
+    message: |
+      Contract accounts should have an expiration in the future 
+      (txn FirstValid > NNNN, or txn FirstValidTime > TTTT) 
+      after which the originator can reclaim their assets.
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    pattern: |
+          Txn.first_valid() < $TIMEOUT
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal
+

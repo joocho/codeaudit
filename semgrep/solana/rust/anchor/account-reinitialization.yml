@@ -1,0 +1,34 @@
+rules:
+  - id: anchor-account-reninitialization
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/4-initialization
+        - https://project-serum.github.io/anchor/tutorials/tutorial-1.html
+    message: |
+      Potentially reinitializable account
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          ...
+          
+          pub fn $INIT(ctx: Context<$ISTRUCT>) -> ProgramResult {
+            ...
+          }
+          
+          ...
+      - metavariable-regex:
+          metavariable: $INIT
+          regex: (.*init.*|.*initialize.*)
+      - pattern: |
+          ...
+          
+          #[derive(Accounts)]
+          pub struct $ISTRUCT<'$A> {
+            $USER: AccountInfo<'$A>,
+            $AUTH: Signer<'$A>,
+          }
+          
+          ...

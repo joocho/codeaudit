@@ -1,0 +1,13 @@
+rules:
+  - id: account-type-confusion
+    patterns:
+    - pattern: |
+        <... $F(&mut $X.data.borrow()) ...>
+    - metavariable-regex:
+        metavariable: $F
+        regex: (.*unpack.*|.*deser.*)
+    message: "Potential account type confusion during deserialization. Is there a check that the input account \"$X\" is of the expected type?"
+    languages: [ rust ]
+    severity: ERROR
+    metadata:
+      url: https://blog.neodyme.io/posts/solana_common_pitfalls#solana-account-confusions

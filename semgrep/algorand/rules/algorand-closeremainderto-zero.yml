@@ -1,0 +1,18 @@
+rules:
+  - id: algorand-CloseRemainderTo-zero-address
+    message: |
+      CloseRemainderTo should be the intended recipient or equal to global ZeroAddress. 
+      An unchecked address could steal all the value!
+      For more info, see https://developer.algorand.org/docs/get-details/dapps/avm/teal/guidelines/
+    patterns: 
+      - pattern: 
+          $TXN.type_enum() == TxnType.Payment
+      - pattern-not-inside: |
+          <... $TXN.close_remainder_to() ...>
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology: pyteal
+      maturity: complete

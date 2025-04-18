@@ -1,0 +1,24 @@
+rules:
+  - id: algorand-overflow-check
+    message: |
+      Possible overflow 
+    patterns: 
+    - pattern-either:
+      - pattern: |
+          $F + ... 
+      - pattern: |  
+          $F * ... 
+      - pattern: |
+          ... + $F 
+      - pattern: |  
+          ... * $F   
+    - pattern-not: |
+          If($F > ... )
+          ...
+          $F + ...    
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal

@@ -1,0 +1,25 @@
+rules:
+  - id: transfer-with-signed-invocation
+    pattern-either:
+      - pattern: |
+          let $FUNC = transfer(...)?;
+          ...
+          invoke_signed(&$FUNC, &[...], ...)
+      - pattern: | 
+          let $FUNC = transfer(...);
+          ...
+          invoke_signed(&$FUNC, &[...], ...)
+      - pattern: | 
+          let $FUNC = transfer(...);
+          ...
+          invoke_signed($FUNC, &[...], ...)
+      - pattern: | 
+          transfer(...)
+          ...
+          invoke_signed(...)
+      - pattern: | 
+          ...
+          invoke_signed(...)
+    message: "Transfer function was declared with invoke_signed, ensure all input is validated regarding ownership"
+    languages: [ rust ]
+    severity: WARNING

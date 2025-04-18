@@ -1,0 +1,53 @@
+rules:
+  - id: anchor-missing-signer-check
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/0-signer-authorization
+    message: Potentially missing signer check
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          ...
+          
+          pub fn $F($CTX: Context<LogMessage>) -> ProgramResult {
+              ...
+              <...$CTX.accounts.$AUTH...>
+              ...
+          }
+          
+          ...
+      - pattern: |
+          ...
+          
+          #[derive(Accounts)]
+          pub struct $STRUCT<'$A> {
+              $AUTH: AccountInfo<'$A>,
+          }
+          
+          ...
+      - pattern-not: |
+          ...
+          
+          pub fn $F($CTX: Context<LogMessage>) -> ProgramResult {
+              ...
+              if !$CTX.accounts.$AUTH.is_signer {
+                ...
+              }
+              ...
+              <...$CTX.accounts.$AUTH...>
+              ...
+          }
+          
+          ...
+      - pattern-not: |
+          ...
+          
+          #[derive(Accounts)]
+          pub struct $STRUCT<'$A> {
+              $AUTH: Signer<'$A>,
+          }
+          
+          ...

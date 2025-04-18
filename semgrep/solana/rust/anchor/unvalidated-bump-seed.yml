@@ -1,0 +1,16 @@
+rules:
+  - id: anchor-unvalidated-bump-seed
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/7-bump-seed-canonicalization
+    message: |
+      Potentially unverified bump seed used.
+      Use let (address, expected_bump) =  Pubkey::find_program_address() instead and make sure that bump == expected_bump.
+      Alternatively, Anchor's #[account(seeds = ..., bump = ...)] annotation can be used.
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern: |
+          create_program_address(&[..., &[$BUMP]], ...)

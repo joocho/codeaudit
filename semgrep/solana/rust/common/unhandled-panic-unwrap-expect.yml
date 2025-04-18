@@ -1,0 +1,14 @@
+rules:
+  - id: unhandled-panic
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://stackoverflow.com/questions/39477684/should-i-avoid-unwrap-in-production-application
+    message: Unrecoverable error may not be unrecoverable. Investigate if this is really the case. If it's recoverable, then handle the error appropriately instead.
+    severity: WARNING
+    languages: [rust]
+    pattern-either:
+      - pattern: |
+          $FOO.unwrap()
+      - pattern: |
+          $FOO.expect(...)

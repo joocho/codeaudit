@@ -1,0 +1,34 @@
+rules:
+  - id: solana-malicious-simulation
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://opcodes.fr/en/publications/2022-01/detecting-transaction-simulation/
+    message: |
+      Potentially malicious simulation. Some wallets may be tricked into displaying an incorrect balance change preview. Review carefully.
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - pattern: |
+          let $SLOT: u64 = u64::from_le_bytes($DATA[$DATA.len() - 8..].try_into().unwrap());
+          ...
+          let $CLOCK = ::get().unwrap();
+          ...
+
+          ...
+          if <... $CLOCK.slot ...> {
+            ...
+          }
+      - pattern: |
+          let $CLOCK = ::get().unwrap();
+
+          ...
+          
+          let slot: u64 = u64::from_le_bytes($DATA[$DATA.len() - 8..].try_into().unwrap());
+          
+          ...
+          
+          if <... $CLOCK.slot ...> {
+            ...
+          }

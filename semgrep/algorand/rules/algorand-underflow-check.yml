@@ -1,0 +1,19 @@
+rules:
+  - id: algorand-underflow-check
+    message: |
+      Possible underflow 
+    mode: taint
+    pattern-sinks:
+      - pattern: $Y - $X
+    pattern-sources:
+        - pattern-either:
+            - pattern-inside: | 
+                def $FUNC(..., $X, ...):
+                  ... 
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - pyteal

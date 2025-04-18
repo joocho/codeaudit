@@ -1,0 +1,25 @@
+rules:
+ -
+    id: basic-arithmetic-overflow
+    message: Possible arithmetic overflow 
+    metadata:
+        references:
+         - https://medium.com/secbit-media/a-disastrous-vulnerability-found-in-smart-contracts-of-beautychain-bec-dbf24ddbc30e
+        category: unsafe-math
+        tags:
+         - BEC
+    mode: taint
+    pattern-sinks:
+      - pattern: $Y + $X
+    pattern-sources:
+        - pattern-either:
+            - pattern-inside: |
+                function $F(..., $X, ...) external { ... }
+            - pattern-inside: |
+                function $F(..., $X, ...) public { ... }
+            - pattern-inside: |
+                function $F(...) internal { ... } 
+    languages: 
+    - solidity
+    severity: INFO
+

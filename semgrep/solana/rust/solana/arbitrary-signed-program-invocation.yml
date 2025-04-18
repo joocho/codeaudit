@@ -1,0 +1,25 @@
+rules:
+  - id: arbitrary-signed-program-invocation
+    patterns:
+    - pattern: |
+        let $ACC = <... next_account_info(...) ...>;
+        ...
+        invoke_signed(
+          <...$ACC ...>,
+          ...
+        )?;
+    - pattern-not: |
+        let $ACC = <... next_account_info(...) ...>;
+        ...
+        if $Y.key != $X {
+          ...
+        }
+        ...
+        invoke_signed(
+          ...
+        )?;
+    message: "Potential arbitrary signed program invocation. Please check that the id() of the program being invoked is actually the expected one."
+    languages: [ rust ]
+    severity: ERROR
+    metadata:
+      url: https://blog.neodyme.io/posts/solana_common_pitfalls#arbitrary-signed-program-invocation

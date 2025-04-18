@@ -1,0 +1,15 @@
+rules:
+  - id: anchor-type-cosplay
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/3-type-cosplay
+    message: |
+      Potential type cosplay (account type confusion).
+      Make sure that the account is of the expected type.
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - pattern: |
+          <...$USER::try_from_slice(&$CTX.accounts.$FOO.data.borrow())...>

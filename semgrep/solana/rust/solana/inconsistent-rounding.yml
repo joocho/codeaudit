@@ -1,0 +1,41 @@
+rules:
+  - id: solana-inconsistent-rounding
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://blog.neodyme.io/posts/lending_disclosure
+        - https://twitter.com/Neodyme/status/1466885443019063301?s=20
+        - https://github.com/solana-labs/solana-program-library/issues/1869
+        - https://github.com/solana-labs/solana-program-library/pull/1883
+    message: |
+      Potentially inconsistent rounding. Loss of funds may occur.
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - patterns:
+        - pattern: |
+            pub fn $F(...) -> Result<u64, ProgramError> {
+              ...
+              let $R = $HW
+                .checked_add($S0)
+                .ok_or($E)?
+                .checked_div($W)
+                .ok_or($E2)?;
+              ...
+            }
+        - metavariable-regex:
+            metavariable: $F
+            regex: .*round.*
+      - patterns:
+          - pattern: |
+              pub fn $F(...) -> Result<u64, ProgramError> {
+                ...
+                let $R = $HW
+                  .checked_add($S0)?
+                  .checked_div($W)?;
+                ...
+              }
+          - metavariable-regex:
+              metavariable: $F
+              regex: .*round.*

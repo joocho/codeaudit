@@ -1,0 +1,11 @@
+rules:
+  - id: simple-overflow-checks
+    patterns:
+        - pattern-either:
+          - pattern: |
+              lamports + $Y > $Z
+          - pattern: |
+              let $X = $Y - $Z;
+    message: "Simple subtraction or addition of lamports could result in Solana programs"
+    languages: [ rust ]
+    severity: WARNING

@@ -1,0 +1,25 @@
+rules:
+  - id: algorand-AssetID-check
+    message: |
+      When a pay transaction or a asset transfer is required, its asset ID should be checked. 
+      If the asset ID is not checked, more valuable asset could be transfered instead of an intended asset!
+      For more info, see the tinyman hack incident report.
+    patterns: 
+      - pattern: 
+          $TXN.type_enum() == TxnType.$TYPE
+      - metavariable-pattern:
+          metavariable: $TYPE
+          pattern-either:
+            - pattern: AssetTransferTxn
+            - pattern: AssetTransfer
+
+      - pattern-not-inside: |
+          <... $TXN.xfer_asset() ...>
+
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      technology: 
+        - pyteal
+      

@@ -1,0 +1,8 @@
+rules:
+  - id: transfer-with-signed-invocation
+    pattern-either:
+      - pattern: |
+          spl_token::instruction::approve
+    message: "A change to account ownership occurs here. Check for appropriate authorization"
+    languages: [ rust ]
+    severity: WARNING

@@ -1,0 +1,7 @@
+rules:
+  - id: CVE-2018-25008
+    pattern:
+      Arc::get_mut
+    message: "Potential memory issues via https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-25008"
+    languages: [rust]
+    severity: WARNING

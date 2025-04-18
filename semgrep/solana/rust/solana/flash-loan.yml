@@ -1,0 +1,26 @@
+rules:
+  - id: solana-flash-loan
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://docs.solend.fi/developers/flash-loans
+        - https://github.com/solendprotocol/solana-program-library/blob/master/token-lending/program/src/processor.rs#L1715
+    message: |
+      Possible flash loan implementation may be used to attack another contract not expecting to be exploited with large
+      amounts of assets.
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - patterns:
+          - pattern: |
+              $VAR
+          - metavariable-regex:
+              metavariable: $VAR
+              regex: (.*flash_loan.* | .*flashLoan.* | .*FlashLoan.*)
+      - patterns:
+          - pattern: |
+              $F(...)
+          - metavariable-regex:
+              metavariable: $F
+              regex: (.*flash_loan.* | .*flashLoan.* | .*FlashLoan.*)

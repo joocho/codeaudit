@@ -1,0 +1,17 @@
+rules:
+  - id: unsafe-functions
+    pattern-either:
+    - pattern: |
+        unsafe fn $F(...) {
+        ... 
+        }
+    - pattern: |
+        unsafe {
+          ...
+        }
+    - pattern: |
+        unsafe trait $T {
+        }
+    message: "Potentially unsafe code. Please review carefully."
+    languages: [ rust ]
+    severity: WARNING

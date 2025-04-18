@@ -1,0 +1,38 @@
+rules:
+  - id: anchor-duplicate-mutable-accounts
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://github.com/project-serum/sealevel-attacks/tree/master/programs/6-duplicate-mutable-accounts
+    message: |
+      Potentially duplicate mutable accounts.
+      Make sure that $ACCOUNT1.key() != $ACCOUNT2.key()
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - focus-metavariable: $USERA
+      - pattern: |
+          ...
+          
+          pub fn $F($CTX: Context<$STRUCT>, $A: u64, $B: u64) -> ProgramResult {
+            let $USERA = <...$CTX.accounts.$ACCOUNT1...>;
+            let $USERB = <...$CTX.accounts.$ACCOUNT2...>;
+            ...
+            <...$USERA...>
+            ...
+            <...$USERB...>
+            ...
+          }
+          
+          ...
+      - pattern: |
+          ...
+          
+          #[account]
+          pub struct $USER {
+            $DATA: u64,
+          }
+          
+          ...
+

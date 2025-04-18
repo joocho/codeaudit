@@ -1,0 +1,15 @@
+rules:
+  - id: overflow-mul
+    metadata:
+      author: Nils Amiet
+      references:
+        - https://medium.com/coinmonks/understanding-arithmetic-overflow-underflows-in-rust-and-solana-smart-contracts-9f3c9802dc45
+    message: Potential multiplication overflow
+    severity: WARNING
+    languages:
+      - rust
+    pattern-either:
+      - pattern: |
+          $A * $B
+      - pattern: |
+          $A *= $B;
