@@ -86,6 +86,10 @@ Make it easy to write secure Rust code. Working group for supply chain security 
     + cargo fmt
     + https://github.com/rust-lang/rustfmt
 
+- cargo-vet
+    + Ensure that third-party Rust dependencies have been audited by a trusted entity
+    + https://github.com/mozilla/cargo-vet
+      
 ### Others
 
 - Rudra: https://github.com/sslab-gatech/Rudra
